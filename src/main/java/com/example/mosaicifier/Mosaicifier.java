@@ -36,7 +36,7 @@ public class Mosaicifier extends Application {
 
     @Override
     public void start(final Stage stage) {
-        stage.setTitle("File Image Opener");
+        stage.setTitle("Mosaic Generator");
 
         final FileChooser fileChooser = new FileChooser();
 
@@ -63,7 +63,7 @@ public class Mosaicifier extends Application {
                 new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(final ActionEvent e) {
-                        mosaicGenerator.createMosaic(50, mosaicPieces, new Image("bestpizza.png"), 5);
+                        mosaicGenerator.createMosaic(120, mosaicPieces, new Image("bestpizza.png"), 6);
                     }
                 });
 

@@ -21,19 +21,23 @@ public class Mosaic {
 
     public void createMosaic(int width, ArrayList<MosaicPiece> pieces, Image toMosaic, double imgSize) {
         int height = (int) ((width / toMosaic.getWidth()) * toMosaic.getHeight());
+        System.out.println(height);
 
         Platform.runLater(() -> {
             ArrayList<Colour> colours = getColourList(width, height, toMosaic);
+            int i;
 
-            for (int i = 0; i < height * width; i++) {
+            for (i = 0; i < colours.size(); i++) {
                 Image mImage = findClosestMosaicPiece(pieces, colours.get(i)).getImg();
                 ImageView view = new ImageView(mImage);
                 view.setPreserveRatio(false);
                 view.setFitWidth(imgSize);
                 view.setFitHeight(imgSize);
+                GridPane.setConstraints(view, i % width, i / width);
+                System.out.printf("%d %d\n", i%width, i/width);
                 mosaicPane.getChildren().add(view);
-                GridPane.setConstraints(view, i % width, i / height);
             }
+            System.out.println(i);
         });
     }
 
@@ -58,17 +62,16 @@ public class Mosaic {
         int sectionWidth = (((int) img.getWidth()) / gridWidth);
 
         for (int i = 0; i < sectionHeight * gridHeight; i += sectionHeight) {
+            System.out.println(i / sectionHeight);
             for (int j = 0; j < sectionWidth * gridWidth; j += sectionWidth) {
-                System.out.println(img.getWidth());
-                System.out.println(img.getHeight());
-                System.out.println();
                 byte[] pixelBuffer = new byte[sectionHeight * sectionWidth * 4];
-                img.getPixelReader().getPixels(j, i, sectionHeight, sectionWidth,
+                img.getPixelReader().getPixels(j, i, sectionWidth, sectionHeight,
                         PixelFormat.getByteBgraInstance(), pixelBuffer, 0, sectionWidth*4);
                 colours.add(getAverageColour(pixelBuffer));
             }
         }
-
+        System.out.println(gridWidth * gridHeight);
+        System.out.println(colours.size());
         return colours;
     }
 
