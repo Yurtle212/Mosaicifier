@@ -4,6 +4,7 @@ module com.example.mosaicifier {
     requires java.desktop;
     requires java.logging;
     requires jdk.jfr;
+    requires javafx.swing;
 
 
     opens com.example.mosaicifier to javafx.fxml;

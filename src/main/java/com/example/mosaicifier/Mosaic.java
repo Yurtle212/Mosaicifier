@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelFormat;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,12 +20,14 @@ public class Mosaic {
         mosaicPane.setVgap(0);
     }
 
-    public void createMosaic(int width, ArrayList<MosaicPiece> pieces, Image toMosaic, double imgSize) {
+    public void createMosaic(int width, ArrayList<MosaicPiece> pieces, Image toMosaic, Stage stage, int size) {
         int height = (int) ((width / toMosaic.getWidth()) * toMosaic.getHeight());
+        int imgSize = size == 0 ? (int) Math.min((stage.getHeight()*.9) / height, (stage.getWidth()*.9) / width) : size;
 
         Platform.runLater(() -> {
             ArrayList<Colour> colours = getColourList(width, height, toMosaic);
             int i;
+            mosaicPane.getChildren().clear();
 
             for (i = 0; i < colours.size(); i++) {
                 Image mImage = findClosestMosaicPiece(pieces, colours.get(i)).getImg();
