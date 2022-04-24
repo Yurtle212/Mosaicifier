@@ -97,9 +97,6 @@ public class Mosaicifier extends Application {
 
     private void openFiles(List<File> files) throws FileNotFoundException {
         for (File file : files) {
-            System.out.println();
-            System.out.println(file.toURI().toString());
-
             Image tmpImg = new Image(file.toURI().toString());
             int width = (int)tmpImg.getWidth();
             int height = (int)tmpImg.getHeight();
