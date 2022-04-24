@@ -1,5 +1,6 @@
 package com.example.mosaicifier;
 
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelFormat;
@@ -18,8 +19,10 @@ public class Mosaic {
         mosaicPane.setVgap(0);
     }
 
-    public void createMosaic(int width, int height, ArrayList<MosaicPiece> pieces, Image toMosaic, double imgSize) {
-        Thread generateMosaicThread = new Thread(() -> {
+    public void createMosaic(int width, ArrayList<MosaicPiece> pieces, Image toMosaic, double imgSize) {
+        int height = (int) ((width / toMosaic.getWidth()) * toMosaic.getHeight());
+
+        Platform.runLater(() -> {
             ArrayList<Colour> colours = getColourList(width, height, toMosaic);
 
             for (int i = 0; i < height * width; i++) {
@@ -32,7 +35,6 @@ public class Mosaic {
                 GridPane.setConstraints(view, i % width, i / height);
             }
         });
-        generateMosaicThread.start();
     }
 
     public static MosaicPiece findClosestMosaicPiece(ArrayList<MosaicPiece> pieces, Colour lookingFor) {
@@ -57,8 +59,11 @@ public class Mosaic {
 
         for (int i = 0; i < sectionHeight * gridHeight; i += sectionHeight) {
             for (int j = 0; j < sectionWidth * gridWidth; j += sectionWidth) {
+                System.out.println(img.getWidth());
+                System.out.println(img.getHeight());
+                System.out.println();
                 byte[] pixelBuffer = new byte[sectionHeight * sectionWidth * 4];
-                img.getPixelReader().getPixels(i, j, sectionHeight, sectionWidth,
+                img.getPixelReader().getPixels(j, i, sectionHeight, sectionWidth,
                         PixelFormat.getByteBgraInstance(), pixelBuffer, 0, sectionWidth*4);
                 colours.add(getAverageColour(pixelBuffer));
             }

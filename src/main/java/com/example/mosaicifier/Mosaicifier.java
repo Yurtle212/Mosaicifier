@@ -63,7 +63,7 @@ public class Mosaicifier extends Application {
                 new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(final ActionEvent e) {
-                        mosaicGenerator.createMosaic(250,200, mosaicPieces, new Image("bestpizza.png"), 5);
+                        mosaicGenerator.createMosaic(50, mosaicPieces, new Image("bestpizza.png"), 5);
                     }
                 });
 
