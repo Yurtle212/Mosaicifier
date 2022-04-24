@@ -1,15 +1,15 @@
 package com.example.mosaicifier;
 
-public record Colour(byte r, byte g, byte b) {
-    public byte getR() {
+public record Colour(int r, int g, int b) {
+    public int getR() {
         return r;
     }
 
-    public byte getG() {
+    public int getG() {
         return g;
     }
 
-    public byte getB() {
+    public int getB() {
         return b;
     }
 
@@ -17,5 +17,14 @@ public record Colour(byte r, byte g, byte b) {
         return Math.abs(compareTo.getR() - r)
                 + Math.abs(compareTo.getG() - g)
                 + Math.abs(compareTo.getB() - b);
+    }
+
+    @Override
+    public String toString() {
+        return "Colour{" +
+                "r=" + r +
+                ", g=" + g +
+                ", b=" + b +
+                '}';
     }
 }

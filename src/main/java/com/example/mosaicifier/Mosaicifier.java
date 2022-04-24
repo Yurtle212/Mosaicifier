@@ -32,6 +32,7 @@ public class Mosaicifier extends Application {
     final double imageX = 50;
     final double imageY = 50;
     final ArrayList<MosaicPiece> mosaicPieces = new ArrayList<>();
+    Mosaic mosaicGenerator;
 
     @Override
     public void start(final Stage stage) {
@@ -40,6 +41,7 @@ public class Mosaicifier extends Application {
         final FileChooser fileChooser = new FileChooser();
 
         final Button openMultipleButton = new Button("Open Images");
+        final Button createMosaic = new Button("Genetate Mosaic");
 
         openMultipleButton.setOnAction(
                 new EventHandler<ActionEvent>() {
@@ -57,14 +59,26 @@ public class Mosaicifier extends Application {
                     }
                 });
 
+        createMosaic.setOnAction(
+                new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(final ActionEvent e) {
+                        mosaicGenerator.createMosaic(250,200, mosaicPieces, new Image("bestpizza.png"), 5);
+                    }
+                });
+
 
         final GridPane inputGridPane = new GridPane();
         imageGridPane = new GridPane();
+        mosaicGenerator = new Mosaic(imageGridPane);
 
         GridPane.setConstraints(openMultipleButton, 0, 0);
+        GridPane.setConstraints(createMosaic, 1, 0);
         inputGridPane.setHgap(6);
         inputGridPane.setVgap(6);
-        inputGridPane.getChildren().addAll(openMultipleButton);
+        inputGridPane.getChildren().addAll(openMultipleButton, createMosaic);
+
+        GridPane.setConstraints(imageGridPane, 0, 1);
 
         imageGridPane.setHgap(0);
         imageGridPane.setVgap(0);
@@ -92,38 +106,8 @@ public class Mosaicifier extends Application {
             byte[] buffer = new byte[width * height * 4];
 
             tmpImg.getPixelReader().getPixels(0, 0, width, height, PixelFormat.getByteBgraInstance(), buffer, 0, width*4);
-            int j = 1;
-            int avgR = 0, avgG = 0, avgB = 0;
-            int r = 0, g = 0, b = 0;
 
-            for (byte by : buffer) {
-                switch (j%4){
-                    case 1:
-                        b = by;
-                        break;
-                    case 2:
-                        g = by;
-                        break;
-                    case 3:
-                        r = by;
-                        break;
-                    case 0:
-                        if (by == -1) {
-                            avgR += r;
-                            avgG += g;
-                            avgB += b;
-                        }
-                    default:
-                        break;
-                }
-                j++;
-            }
-            avgR = avgR/(j/4);
-            avgG = avgG/(j/4);
-            avgB = avgB/(j/4);
-
-            System.out.printf("Averages: r%d g%d b%d", avgR, avgG, avgB);
-            Colour avgColour = new Colour((byte) avgR, (byte) avgG, (byte) avgB);
+            Colour avgColour = Mosaic.getAverageColour(buffer);
             MosaicPiece mosaicPiece = new MosaicPiece(tmpImg, avgColour);
             mosaicPieces.add(mosaicPiece);
         }
