@@ -68,7 +68,7 @@ public class Mosaicifier extends Application {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         final FileChooser fileChooserSave = new FileChooser();
-                        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Png File (*.png)", "*.png"));
+                        fileChooserSave.getExtensionFilters().add(new FileChooser.ExtensionFilter("png File (*.png)", "*.png"));
                         File file =
                                 fileChooserSave.showSaveDialog(stage);
                         if (file != null) {
