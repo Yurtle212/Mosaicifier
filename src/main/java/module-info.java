@@ -1,6 +1,9 @@
 module com.example.mosaicifier {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.desktop;
+    requires java.logging;
+    requires jdk.jfr;
 
 
     opens com.example.mosaicifier to javafx.fxml;
